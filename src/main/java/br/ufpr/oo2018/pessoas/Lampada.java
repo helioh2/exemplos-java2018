@@ -5,18 +5,27 @@
  */
 package br.ufpr.oo2018.pessoas;
 
-import java.util.List;
-
 /**
  *
  * @author helio
  */
-public class Comodo {
+class Lampada {
     
-    private List<Pessoa> pessoas;
-    
-    public void add(Pessoa p) {
-        this.pessoas.add(p);
+    private boolean aceso = false;
+
+    public void acender() {
+        aceso = true;
     }
+    
+    public void apagar() {
+        aceso = false;
+    }
+
+    public boolean isAceso() {
+        return aceso;
+    }
+
+    
+    
     
 }

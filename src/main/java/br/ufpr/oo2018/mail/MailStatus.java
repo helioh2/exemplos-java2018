@@ -3,19 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.ufpr.oo2018.pessoas;
+package br.ufpr.oo2018.mail;
 
 /**
  *
  * @author helio
  */
-public class Pessoa {
-    
-    private Comodo comodoAtual;
-    
-    public void entra(Comodo comodo) {
-        comodoAtual = comodo;
-        comodo.add(this);
-    }
-    
+public enum MailStatus {
+    RASCUNHO,
+    ENVIADA,
+    RECEBIDA,
+    LIDA,
+    DELETADA;
 }
