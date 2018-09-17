@@ -64,6 +64,13 @@ public class MailClient {
     public void enviar(MailItem email){
         servidor.receber(email);
     }
+
+    public void receber(MailItem email) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
-    
+    public MailItem abrir(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

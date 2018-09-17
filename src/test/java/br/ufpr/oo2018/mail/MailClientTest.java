@@ -15,7 +15,15 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.*;
 
 /**
  *
@@ -23,20 +31,22 @@ import static org.junit.Assert.*;
  */
 public class MailClientTest {
     
-//    @Mock
+    @Mock
     MailServer ms1;
-//    @Mock
+    @Mock
     MailServer ms2;
     
     
     public MailClientTest() {
+        
     }
    
     
     @Before
     public void setUp() {
-        ms1 = new MailServer("teste.com");
-        ms2 = new MailServer("exemplo.com");
+        MockitoAnnotations.initMocks(this);
+        when(ms1.getDominio()).thenReturn("teste.com");
+        // when(ms2.getDominio()).thenReturn("example.com");
     }
    
 
@@ -50,7 +60,7 @@ public class MailClientTest {
          MailItem email = mc1.escrever(Arrays.asList("beltrano@teste.com"),
                  "assunto", "mensagem");
          //VERIFICAÇÃO
-         assertEquals("beltrano@teste.com", email.getPara());
+         assertEquals(Arrays.asList("beltrano@teste.com"), email.getPara());
          assertEquals("fulano@teste.com", email.getDe());
          assertEquals("assunto", email.getAssunto());
          assertEquals("mensagem", email.getMensagem());
@@ -60,19 +70,73 @@ public class MailClientTest {
      }
      
      @Test
-     public void testEnviarMesmoServidorSucesso() {
+     public void testEnviar() {
+        
          //PREPARAÇÃO
          MailClient mc1 = new MailClient("fulano", ms1);
-         MailClient mc2 = new MailClient("beltrano", ms1);
-         //EXECUÇÃO
          MailItem email = mc1.escrever(Arrays.asList("beltrano@teste.com"),
                  "assunto", "mensagem");
+        //EXECUCAO
          mc1.enviar(email);
+         
          //VERIFICAÇÃO
+         verify(ms1).receber(email);
          assertTrue(mc1.getEnviadas().contains(email));
-         assertFalse(mc1.getRascunhos().contains(email));
-         assertEquals(MailStatus.RECEBIDA, email.getStatus());
-         assertTrue(mc2.getCaixaEntrada().contains(email));
-//         assert
+         assertFalse(mc1.getRascunhos().contains(email));     
+         assertEquals(MailStatus.ENVIADA, email.getStatus());
      }
+     
+     @Test
+     public void testReceber() {
+         //PREPARAÇÃO
+         MailClient mc2 = new MailClient("beltrano", ms1);
+         MailItem email = new MailItem("fulano");
+         email.setAssunto("assunto");
+         email.setMensagem("mensagem");
+         email.setPara(Arrays.asList("beltrano@teste.com"));
+         //EXECUCAO
+         mc2.receber(email);
+         //VERIFICAÇÃO
+         assertTrue(mc2.getCaixaEntrada().contains(email));
+         assertEquals(MailStatus.RECEBIDA, email.getStatus());
+     }
+     
+     
+     @Test
+     public void testAbrirSucesso() {
+         //PREPARAÇÃO
+         MailClient mc2 = new MailClient("beltrano", ms1);
+         MailItem email = new MailItem("fulano");
+         email.setAssunto("assunto");
+         email.setMensagem("mensagem");
+         email.setPara(Arrays.asList("beltrano@teste.com"));
+         int id = email.getId();
+         mc2.receber(email);
+
+         //EXECUÇÃO
+         MailItem theEmail = mc2.abrir(id);
+
+         //VERIFICAÇÃO
+         assertEquals(theEmail, email);
+         assertEquals(MailStatus.LIDA, theEmail);
+         
+     }
+
+     @Test(expected = ItemNaoEncontradoException.class)
+     public void testAbrirFalha() {
+         //PREPARAÇÃO
+         MailClient mc2 = new MailClient("beltrano", ms1);
+         MailItem email = new MailItem("fulano");
+         email.setAssunto("assunto");
+         email.setMensagem("mensagem");
+         email.setPara(Arrays.asList("beltrano@teste.com"));
+         int id = email.getId();
+         mc2.receber(email);
+
+         //EXECUÇÃO
+         mc2.abrir(id+1);
+         
+     }
+
+
 }

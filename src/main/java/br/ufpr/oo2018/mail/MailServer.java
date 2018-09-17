@@ -31,7 +31,12 @@ public class MailServer {
     
     public void addServidor (MailServer servidor){
         this.servidoresConhecidos.add(servidor);
-        servidor.servidoresConhecidos.add(this);
+        servidor.getServidoresConhecidos().add(this);
+    }
+
+        
+    public List<MailServer> getServidoresConhecidos() {
+        return servidoresConhecidos;
     }
 
     public String getDominio() {

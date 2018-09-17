@@ -1,0 +1,30 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "exemplos-java-2018-novo",
+                "projectName": "exemplos-java-2018-novo",
+                "workingDirectory": "/home/helio/Projects/exemplos-java2018",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "exemplos-java-2018-novo",
+                "projectName": "exemplos-java-2018-novo",
+                "workingDirectory": "/home/helio/Projects/exemplos-java2018",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}
