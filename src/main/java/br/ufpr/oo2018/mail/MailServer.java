@@ -6,7 +6,10 @@
 package br.ufpr.oo2018.mail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -14,28 +17,29 @@ import java.util.List;
  */
 public class MailServer {
     private String dominio;
-    private List<MailClient> clientes;
-    private List<MailServer> servidoresConhecidos;
+    private Map<String, MailClient> clientes;
+    private Map<String, MailServer> servidoresConhecidos;
 
     public MailServer(String dominio) {
         this.dominio = dominio;
-        this.clientes = new ArrayList();
-        this.servidoresConhecidos =new ArrayList<>();
+        this.clientes = new HashMap<>();
+        this.servidoresConhecidos =new HashMap<>();
         
         
     }
+   
     public void addCliente (MailClient cliente){
-        clientes.add(cliente);
+        clientes.put(cliente.getUsername(), cliente);
         
     }
     
     public void addServidor (MailServer servidor){
-        this.servidoresConhecidos.add(servidor);
-        servidor.getServidoresConhecidos().add(this);
+        this.servidoresConhecidos.put(servidor.getDominio(), servidor);
+        servidor.getServidoresConhecidos().put(this.getDominio(), this);
     }
 
         
-    public List<MailServer> getServidoresConhecidos() {
+    public Map<String, MailServer> getServidoresConhecidos() {
         return servidoresConhecidos;
     }
 
@@ -46,7 +50,52 @@ public class MailServer {
     
     
     public void receber(MailItem m){
-        System.out.println("Recebido");        
+        encaminhar(m);
+    }
+
+    private void encaminhar(MailItem m) {
+        Iterator<String> it =  m.getPara().iterator();       
+        while (it.hasNext()) {
+            String endereco = it.next();
+            String username = endereco.split("@")[0];
+            String dominio = endereco.split("@")[1];
+            if (this.dominio.equals(dominio)) {
+                encaminharCliente(username, m);
+            } else {
+                encaminharServidor(dominio, m);
+            }
+        }
+        
+//        for (String endereco: m.getPara()){
+//            String username = endereco.split("@")[0];
+//            String dominio = endereco.split("@")[1];
+//            if (this.dominio.equals(dominio)) {
+//                encaminharCliente(username, m);
+//            } else {
+//                encaminharServidor(dominio, m);
+//            }
+//        }
+        
+    }
+    
+    private void encaminharCliente(String username, MailItem m) {
+//        for (MailClient mc: clientes.values()) {
+//            if (mc.getUsername().equals(username)) {
+//                mc.receber(m);
+//                return;
+//            }
+//        }
+        if (clientes.containsKey(username)) {
+            MailClient mc = clientes.get(username);
+            mc.receber(m);
+        }
+    }
+
+    private void encaminharServidor(String dominio, MailItem m) {
+        if (servidoresConhecidos.containsKey(dominio)) {
+            MailServer ms = servidoresConhecidos.get(dominio);
+            ms.receber(m);
+        }
     }
     
 }

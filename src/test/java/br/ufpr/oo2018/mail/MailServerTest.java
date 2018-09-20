@@ -12,6 +12,7 @@ import br.ufpr.oo2018.mail.MailStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -67,7 +68,7 @@ public class MailServerTest {
         MailServer ms1 = new MailServer("example.com");
         MailServer ms2 = mock(MailServer.class);
         when(ms2.getDominio()).thenReturn("teste.com");
-        when(ms2.getServidoresConhecidos()).thenReturn(new ArrayList<>());
+        when(ms2.getServidoresConhecidos()).thenReturn(new HashMap<>());
         ms1.addServidor(ms2);
         MailItem email = new MailItem("fulano");
         email.setAssunto("assunto");

@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class MailClient {
     String username;
-    List<MailItem> caixaEntrada; 
+    List<MailItem> caixaEntrada; ///DÁ PARA OTIMIZAR COM MAP
     List<MailItem> enviadas;
     List<MailItem> lixeira;
     List<MailItem> rascunhos;
@@ -31,10 +31,11 @@ public class MailClient {
     }
     
     public MailItem escrever(List<String> para, String assunto, String mensagem){
-        MailItem email = new MailItem(this.username);
+        MailItem email = new MailItem(this.username + "@" + servidor.getDominio());
         email.setAssunto(assunto);
         email.setMensagem(mensagem);
         email.setPara(para);
+        rascunhos.add(email);
         return email;
     }
 
@@ -62,15 +63,31 @@ public class MailClient {
     
     
     public void enviar(MailItem email){
+        enviadas.add(email);
+        rascunhos.remove(email);
+        email.setEnviada();
         servidor.receber(email);
     }
 
     public void receber(MailItem email) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        caixaEntrada.add(email);
+        email.setRecebida();
     }
     
-    public MailItem abrir(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public MailItem abrir(int id) throws ItemNaoEncontradoException {
+//        for (int i = 0; i < caixaEntrada.size(); i++) {
+//            MailItem item = caixaEntrada.get(i);
+//            if (item.getId() == id) {
+//                return item;
+//            }
+//        }
+        for (MailItem item: caixaEntrada) {
+            if (item.getId() == id) {
+                item.setLida();
+                return item;
+            }
+        }
+        throw new ItemNaoEncontradoException("ERRO: Email não encontrado");
     }
 
 }

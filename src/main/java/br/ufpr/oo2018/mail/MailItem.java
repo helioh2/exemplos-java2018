@@ -70,6 +70,18 @@ public class MailItem {
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
+    
+    public void setEnviada() {
+        this.status = MailStatus.ENVIADA;
+    }
+
+    void setRecebida() {
+        this.status = MailStatus.RECEBIDA;
+    }
+
+    void setLida() {
+        this.status = MailStatus.LIDA;
+    }
      
     
     

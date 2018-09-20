@@ -103,7 +103,7 @@ public class MailClientTest {
      
      
      @Test
-     public void testAbrirSucesso() {
+     public void testAbrirSucesso() throws ItemNaoEncontradoException {
          //PREPARAÇÃO
          MailClient mc2 = new MailClient("beltrano", ms1);
          MailItem email = new MailItem("fulano");
@@ -118,12 +118,12 @@ public class MailClientTest {
 
          //VERIFICAÇÃO
          assertEquals(theEmail, email);
-         assertEquals(MailStatus.LIDA, theEmail);
+         assertEquals(MailStatus.LIDA, theEmail.getStatus());
          
      }
 
      @Test(expected = ItemNaoEncontradoException.class)
-     public void testAbrirFalha() {
+     public void testAbrirFalha() throws ItemNaoEncontradoException {
          //PREPARAÇÃO
          MailClient mc2 = new MailClient("beltrano", ms1);
          MailItem email = new MailItem("fulano");

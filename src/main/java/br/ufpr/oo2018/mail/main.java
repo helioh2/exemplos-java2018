@@ -20,6 +20,10 @@ public class main {
  
       
        MailClient ns1 = new MailClient("fulano", serv1 ); 
+       ControladorMailClient cns1 = new ControladorMailClient(ns1);
+       
+       //SIMULAÇÃO DE REQUISIÇÃO DE ABRIR EMAIL:
+       cns1.tratarAbrir(10);
        
        MailItem novoEmail = new MailItem("fulano");
         
