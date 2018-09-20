@@ -23,9 +23,7 @@ public class MailServer {
     public MailServer(String dominio) {
         this.dominio = dominio;
         this.clientes = new HashMap<>();
-        this.servidoresConhecidos =new HashMap<>();
-        
-        
+        this.servidoresConhecidos =new HashMap<>(); 
     }
    
     public void addCliente (MailClient cliente){
