@@ -23,6 +23,27 @@ public class Main {
         banestado.addConta(c3);
         
         System.out.println(banestado);
+        
+        
+        Funcionario f1 = new Funcionario("José", "1828282", 2000);
+        Funcionario f2 = new Funcionario("Maria", "27272892", 5000);
+        
+        Funcionario g1 = new Gerente("João", "3838383", 7000);
+        
+//        Gerente g2 = (Gerente) f1;
+        f1 = new Gerente(f1);
+        
+        
+        Secretario s1 = new Secretario("Ana", "2727272", 4000);
+        
+        System.out.println(f1.getBonificacao());
+        System.out.println(f2.getBonificacao());
+        System.out.println(g1.getBonificacao());
+        System.out.println(s1.getBonificacao());
+//        System.out.println(g2.getBonificacao());
+        
+        
+        
     }
 
 }
